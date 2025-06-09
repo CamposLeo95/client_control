@@ -1,9 +1,13 @@
 package com.client_control.client_control.services;
 
-import com.client_control.client_control.dtos.ClientDTO;
+import com.client_control.client_control.dtos.ClientRequestDTO;
+import com.client_control.client_control.dtos.ClientResponseDTO;
 import com.client_control.client_control.entities.Client;
+import com.client_control.client_control.mappers.ClientMapper;
 import com.client_control.client_control.repositories.ClientRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ClientService {
@@ -13,14 +17,14 @@ public class ClientService {
         this.clientRepository = clientRepository;
     }
 
-    public void createClient(ClientDTO dto) {
-        Client client = new Client(
-                dto.name(),
-                dto.login(),
-                dto.password(),
-                dto.phone(),
-                dto.email()
-        );
-        this.clientRepository.save(client);
+    public void createClient(ClientRequestDTO dto) {
+        clientRepository.save(ClientMapper.toEntity(dto));
+    }
+
+    public List<ClientResponseDTO> getAllClient(){
+        return clientRepository.findAll()
+                .stream()
+                .map(ClientMapper::toResponseDTO)
+                .toList();
     }
 }

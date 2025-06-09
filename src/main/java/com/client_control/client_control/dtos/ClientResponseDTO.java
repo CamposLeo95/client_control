@@ -1,10 +1,9 @@
 package com.client_control.client_control.dtos;
 
-public record ClientDTO(
+public record ClientResponseDTO(
+        Long id,
         String name,
         String login,
-        String password,
         String phone,
         String email
-) {
-}
+) { }

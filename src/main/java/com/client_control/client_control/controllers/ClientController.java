@@ -1,13 +1,14 @@
 package com.client_control.client_control.controllers;
 
-import com.client_control.client_control.dtos.ClientDTO;
+
+import com.client_control.client_control.dtos.ClientRequestDTO;
+import com.client_control.client_control.dtos.ClientResponseDTO;
+import com.client_control.client_control.entities.Client;
 import com.client_control.client_control.services.ClientService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/client")
@@ -20,9 +21,13 @@ public class ClientController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createClient(@RequestBody ClientDTO dto){
-        this.clientService.createClient(dto);
-
+    public ResponseEntity<Void> createClient(@RequestBody ClientRequestDTO dto){
+        clientService.createClient(dto);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ClientResponseDTO>> getAllClient(){
+        return ResponseEntity.ok(clientService.getAllClient());
     }
 }
