@@ -1,19 +1,22 @@
 package com.client_control.client_control.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import com.client_control.client_control.entities.commom.AuditableEntity;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
 
 @Entity
 @Table(name = "tb_sign")
-public class Sign {
+public class Sign extends AuditableEntity {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private boolean active;
+
+    @Column(name = "active")
+    private boolean activeSign;
+
     private LocalDate expireDate;
 
     @ManyToOne
@@ -24,6 +27,15 @@ public class Sign {
     @JoinColumn(name = "service_offering_id", nullable = false)
     private ServiceOffering serviceOffering;
 
+    public Sign() {}
+
+    public Sign(boolean activeSign, LocalDate expireDate, Client client, ServiceOffering serviceOffering) {
+        this.activeSign = activeSign;
+        this.expireDate = expireDate;
+        this.client = client;
+        this.serviceOffering = serviceOffering;
+    }
+
     public Long getId() {
         return id;
     }
@@ -32,12 +44,12 @@ public class Sign {
         this.id = id;
     }
 
-    public boolean isActive() {
-        return active;
+    public boolean isActiveSign() {
+        return activeSign;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
+    public void setActiveSign(boolean active) {
+        this.activeSign = active;
     }
 
     public LocalDate getExpireDate() {

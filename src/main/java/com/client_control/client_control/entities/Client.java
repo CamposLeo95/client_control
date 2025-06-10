@@ -1,5 +1,6 @@
 package com.client_control.client_control.entities;
 
+import com.client_control.client_control.entities.commom.AuditableEntity;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -8,7 +9,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "tb_client")
-public class Client {
+public class Client extends AuditableEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
