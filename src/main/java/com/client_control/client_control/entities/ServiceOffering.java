@@ -3,6 +3,9 @@ package com.client_control.client_control.entities;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "tb_service_offering")
 public class ServiceOffering {
@@ -12,6 +15,9 @@ public class ServiceOffering {
     private Long id;
     private String name;
     private BigDecimal price;
+
+    @OneToMany
+    List<Sign> signs = new ArrayList<>();
 
     public ServiceOffering(){}
 

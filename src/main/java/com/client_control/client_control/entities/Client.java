@@ -2,6 +2,8 @@ package com.client_control.client_control.entities;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -27,6 +29,9 @@ public class Client {
     @Column(name = "email")
     private String email;
 
+    @OneToMany
+    List<Sign> signs = new ArrayList<>();
+
 
     @ManyToOne
     @JoinColumn(name ="user_id", nullable = true)
@@ -41,7 +46,6 @@ public class Client {
         this.phone = phone;
         this.email = email;
     }
-
 
     public Long getId() {
         return this.id;

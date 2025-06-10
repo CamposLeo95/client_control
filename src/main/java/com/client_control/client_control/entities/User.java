@@ -29,8 +29,8 @@ public class User {
     @Column(name= "admin")
     private boolean admin;
 
-    @OneToMany
-    private List<Client> clients = new ArrayList<>();
+    @OneToMany(mappedBy = "user")
+    private final List<Client> clients = new ArrayList<>();
 
     public User() {}
 
@@ -44,6 +44,10 @@ public class User {
 
     public UUID getId() {
         return id;
+    }
+
+    public void setId(UUID id){
+        this.id = id;
     }
 
     public String getName() {
@@ -66,9 +70,6 @@ public class User {
         return email;
     }
 
-    public void setId(UUID id){
-        this.id = id;
-    }
 
     public void setEmail(String email) {
         this.email = email;
@@ -88,5 +89,9 @@ public class User {
 
     public void setAdmin(boolean admin) {
         this.admin = admin;
+    }
+
+    public List<Client> getClients() {
+        return clients;
     }
 }
