@@ -27,9 +27,12 @@ public class Client {
     @Column(name = "email")
     private String email;
 
-    public Client() {
 
-    }
+    @ManyToOne
+    @JoinColumn(name ="user_id", nullable = true)
+    private User user;
+
+    public Client() {}
 
     public Client(String name, String login, String password, String phone, String email) {
         this.name = name;
@@ -64,6 +67,8 @@ public class Client {
         return phone;
     }
 
+    public User getUser() { return user; }
+
     public void setName(String name){
         this.name = name;
     }
@@ -83,4 +88,6 @@ public class Client {
     public void setPhone(String phone) {
         this.phone = phone;
     }
+
+    public void setUser(User user) {this.user = user;}
 }

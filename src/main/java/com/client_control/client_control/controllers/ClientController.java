@@ -1,14 +1,14 @@
 package com.client_control.client_control.controllers;
 
 
-import com.client_control.client_control.dtos.ClientRequestDTO;
-import com.client_control.client_control.dtos.ClientResponseDTO;
-import com.client_control.client_control.entities.Client;
+import com.client_control.client_control.dtos.client.ClientRequestDTO;
+import com.client_control.client_control.dtos.client.ClientResponseDTO;
 import com.client_control.client_control.services.ClientService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/client")
