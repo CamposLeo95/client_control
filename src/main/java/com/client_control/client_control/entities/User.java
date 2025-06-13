@@ -31,7 +31,7 @@ public class User extends AuditableEntity {
     private boolean admin;
 
     @OneToMany(mappedBy = "user")
-    private final List<Client> clients = new ArrayList<>();
+    private List<Client> clients = new ArrayList<>();
 
     public User() {}
 
@@ -94,5 +94,9 @@ public class User extends AuditableEntity {
 
     public List<Client> getClients() {
         return clients;
+    }
+
+    public void setClients(List<Client> clients) {
+        this.clients = clients;
     }
 }

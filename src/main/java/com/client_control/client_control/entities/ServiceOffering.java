@@ -31,23 +31,32 @@ public class ServiceOffering extends AuditableEntity {
         return id;
     }
 
-    public String getName(){
-        return name;
-    }
-
-    public BigDecimal getPrice(){
-        return price;
-    }
-
     public void setId(Long id){
         this.id = id;
+    }
+
+    public String getName(){
+        return name;
     }
 
     public void setName(String businessService){
         this.name = businessService;
     }
 
+    public BigDecimal getPrice(){
+        return price;
+    }
+
     public void setPrice(BigDecimal price){
         this.price = price;
     }
+
+    public List<Sign> getSigns(){
+        return signs;
+    }
+
+    public void setSigns(List<Sign> signs){
+        this.signs = signs;
+    }
+
 }
