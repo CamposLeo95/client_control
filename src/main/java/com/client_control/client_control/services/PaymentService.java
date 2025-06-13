@@ -2,6 +2,7 @@ package com.client_control.client_control.services;
 import com.client_control.client_control.dtos.payment.PaymentRequestDTO;
 import com.client_control.client_control.entities.Payment;
 import com.client_control.client_control.entities.Sign;
+import com.client_control.client_control.exceptions.BusinessException;
 import com.client_control.client_control.repositories.PaymentRepository;
 import org.springframework.stereotype.Service;
 
@@ -59,7 +60,7 @@ public class PaymentService {
             var serviceOffering = serviceOfferingService.findServiceOfferingById(dto.serviceOffering_id());
 
             if(dto.value().compareTo(serviceOffering.getPrice()) < 0){
-                throw new RuntimeException("Valor inferior ao preço do serviço");
+                throw new BusinessException("Valor inferior ao preço do serviço");
             }
 
             var totalMonths = dto.value().divide(serviceOffering.getPrice(), 0, RoundingMode.DOWN).intValue();

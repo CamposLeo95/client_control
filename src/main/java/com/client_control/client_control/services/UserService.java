@@ -2,6 +2,7 @@ package com.client_control.client_control.services;
 
 import com.client_control.client_control.dtos.user.UserRequestDTO;
 import com.client_control.client_control.dtos.user.UserResponseDTO;
+import com.client_control.client_control.exceptions.ResourceNotFoundException;
 import com.client_control.client_control.mappers.UserMapper;
 import com.client_control.client_control.repositories.UserRepository;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,7 @@ public class UserService {
 
     public UserResponseDTO findUserById(UUID id) {
         var user = userRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("Usuário nao encontrado")
+                () -> new ResourceNotFoundException("Usuário nao encontrado")
         );
         return UserMapper.toResponseDTO(user);
     }

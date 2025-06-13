@@ -2,6 +2,7 @@ package com.client_control.client_control.services;
 
 import com.client_control.client_control.dtos.serviceOffering.ServiceOfferingRequestDTO;
 import com.client_control.client_control.entities.ServiceOffering;
+import com.client_control.client_control.exceptions.ResourceNotFoundException;
 import com.client_control.client_control.mappers.ServiceOfferingMapper;
 import com.client_control.client_control.repositories.ServiceOfferingRepository;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ public class ServiceOfferingService {
 
     public ServiceOffering findServiceOfferingById(Long id){
         return serviceOfferingRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("serviço não encontrado!")
+                () -> new ResourceNotFoundException("serviço não encontrado!")
         );
     }
 

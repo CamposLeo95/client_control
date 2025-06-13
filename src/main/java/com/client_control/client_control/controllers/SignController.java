@@ -21,7 +21,6 @@ public class SignController {
     @PutMapping("/toggle/{sign_id}")
     public ResponseEntity<Void> toggleStatusSign(@PathVariable("sign_id") Long id) {
         signService.toggleStatusSign(id);
-
         return ResponseEntity.ok().build();
     }
 }

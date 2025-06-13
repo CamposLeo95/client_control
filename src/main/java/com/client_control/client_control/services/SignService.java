@@ -1,7 +1,7 @@
 package com.client_control.client_control.services;
 
-import com.client_control.client_control.dtos.sign.SignUpdateRequestDTO;
 import com.client_control.client_control.entities.Sign;
+import com.client_control.client_control.exceptions.ResourceNotFoundException;
 import com.client_control.client_control.repositories.SignRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +18,7 @@ public class SignService {
 
     public Sign findSignById(Long id){
         return signRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("Assinatura nao encontrada!")
+                () -> new ResourceNotFoundException("Assinatura nao encontrada!")
         );
     }
 
@@ -28,7 +28,7 @@ public class SignService {
 
     public void updateSign(Sign sign, LocalDate expireDate) {
         var currentSign = signRepository.findById(sign.getId()).orElseThrow(
-                () -> new RuntimeException("Assinatura nao encontrada!")
+                () -> new ResourceNotFoundException("Assinatura nao encontrada!")
         );
 
         if(expireDate != null){
@@ -40,15 +40,10 @@ public class SignService {
     }
 
     public void toggleStatusSign(Long id){
-        var currentSign = findSignById(id);
+        Sign sign = findSignById(id);
 
-        if(currentSign.isActiveSign()){
-            currentSign.setActiveSign(false);
-        } else {
-            currentSign.setActiveSign(true);
-        }
-
-        signRepository.save(currentSign);
+        sign.setActiveSign(!sign.isActiveSign());
+        signRepository.save(sign);
 
     }
 }
