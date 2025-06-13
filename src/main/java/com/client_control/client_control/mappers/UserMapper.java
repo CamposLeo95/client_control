@@ -19,8 +19,8 @@ public class UserMapper {
     public static User toEntity(UserRequestDTO dto){
         return new User(
                 dto.name(),
-                dto.login(),
                 dto.email(),
+                dto.login(),
                 dto.password(),
                 dto.admin()
         );

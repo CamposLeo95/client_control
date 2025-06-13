@@ -40,10 +40,10 @@ public class Client extends AuditableEntity {
 
     public Client(String name, String login, String password, String phone, String email) {
         this.name = name;
+        this.email = email;
         this.login = login;
         this.password = password;
         this.phone = phone;
-        this.email = email;
     }
 
     public Long getId() {
