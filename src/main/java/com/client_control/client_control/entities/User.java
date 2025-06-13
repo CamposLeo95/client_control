@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "tb_users")
+@Table(name = "tb_user")
 public class User extends AuditableEntity {
 
     @Id

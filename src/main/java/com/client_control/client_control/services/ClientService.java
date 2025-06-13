@@ -2,6 +2,7 @@ package com.client_control.client_control.services;
 
 import com.client_control.client_control.dtos.client.ClientRequestDTO;
 import com.client_control.client_control.dtos.client.ClientResponseDTO;
+import com.client_control.client_control.entities.Client;
 import com.client_control.client_control.mappers.ClientMapper;
 import com.client_control.client_control.repositories.ClientRepository;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,12 @@ public class ClientService {
 
     public void createClient(ClientRequestDTO dto) {
         clientRepository.save(ClientMapper.toEntity(dto));
+    }
+
+    public Client findClientById(Long id) {
+        return clientRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("Cliente não encontrado!")
+        );
     }
 
     public List<ClientResponseDTO> getAllClient(){

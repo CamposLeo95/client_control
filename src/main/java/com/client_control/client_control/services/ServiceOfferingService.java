@@ -15,6 +15,12 @@ public class ServiceOfferingService {
         this.serviceOfferingRepository = serviceOfferingRepository;
     }
 
+    public ServiceOffering findServiceOfferingById(Long id){
+        return serviceOfferingRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("serviço não encontrado!")
+        );
+    }
+
     public void createServiceOffering(ServiceOfferingRequestDTO dto){
         serviceOfferingRepository.save(ServiceOfferingMapper.toEntity(dto));
     }
