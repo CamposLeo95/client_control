@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "tb_user")
-public class User extends AuditableEntity implements UserDetails{
+public class User extends AuditableEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -103,34 +103,4 @@ public class User extends AuditableEntity implements UserDetails{
         this.clients = clients;
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        if(this.role == UserRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
-        else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
-    }
-
-    @Override
-    public String getUsername() {
-        return login;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
 }

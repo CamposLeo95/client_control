@@ -7,7 +7,6 @@ public record ClientRequestDTO(
         String login,
         String password,
         String phone,
-        String email,
-        UUID user_id
+        String email
 ) {
 }

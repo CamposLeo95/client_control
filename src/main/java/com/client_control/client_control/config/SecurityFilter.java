@@ -1,5 +1,7 @@
 package com.client_control.client_control.config;
 
+import com.client_control.client_control.entities.User;
+import com.client_control.client_control.entities.UserDetailsImpl;
 import com.client_control.client_control.exceptions.ResourceNotFoundException;
 import com.client_control.client_control.repositories.UserRepository;
 import com.client_control.client_control.services.TokenService;
@@ -10,13 +12,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Optional;
 import java.util.UUID;
 
 @Component
@@ -33,9 +33,13 @@ public class SecurityFilter extends OncePerRequestFilter {
         var token = this.recoveryToken(request);
         if(token != null){
             var login = tokenService.validateToken(token);
-            UserDetails user = userRepository.findByLogin(login);
+            var user = userRepository.findByLogin(login).orElseThrow(
+                    () -> new ResourceNotFoundException("Usuario não encontrado!")
+            );
 
-            var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+            var userDetails = new UserDetailsImpl(user);
+
+            var authentication = new UsernamePasswordAuthenticationToken( user, null, userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 

@@ -6,6 +6,8 @@ import com.client_control.client_control.repositories.SignRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SignService {
@@ -20,6 +22,11 @@ public class SignService {
         return signRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Assinatura nao encontrada!")
         );
+    }
+
+
+    public List<Sign> findAllSign() {
+        return signRepository.findAll();
     }
 
     public Sign createSign(Sign sign){

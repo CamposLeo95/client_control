@@ -7,6 +7,8 @@ import com.client_control.client_control.mappers.ServiceOfferingMapper;
 import com.client_control.client_control.repositories.ServiceOfferingRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ServiceOfferingService {
 
@@ -24,6 +26,10 @@ public class ServiceOfferingService {
 
     public void createServiceOffering(ServiceOfferingRequestDTO dto){
         serviceOfferingRepository.save(ServiceOfferingMapper.toEntity(dto));
+    }
+
+    public List<ServiceOffering> findAllServiceOffering() {
+        return serviceOfferingRepository.findAll();
     }
 
 }

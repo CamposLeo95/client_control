@@ -1,6 +1,7 @@
 package com.client_control.client_control.entities;
 
 import com.client_control.client_control.entities.commom.AuditableEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public class Client extends AuditableEntity {
     List<Sign> signs = new ArrayList<>();
 
     @ManyToOne
-        @JoinColumn(name ="user_id", nullable = true)
+    @JoinColumn(name ="user_id", nullable = true)
     private User user;
 
     public Client() {}

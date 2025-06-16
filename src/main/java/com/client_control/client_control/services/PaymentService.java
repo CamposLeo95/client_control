@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class PaymentService {
@@ -84,5 +85,9 @@ public class PaymentService {
             paymentRepository.save(payment);
         }
 
+    }
+
+    public List<Payment> findAllPayments(){
+        return paymentRepository.findAll();
     }
 }

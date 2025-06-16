@@ -6,9 +6,11 @@ import com.client_control.client_control.entities.User;
 import com.client_control.client_control.exceptions.ResourceNotFoundException;
 import com.client_control.client_control.mappers.UserMapper;
 import com.client_control.client_control.repositories.UserRepository;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -37,9 +39,15 @@ public class UserService {
 
     public UserResponseDTO findUserById(UUID id) {
         var user = userRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Usuário nao encontrado")
+                () -> new ResourceNotFoundException("Usuário nao encontrado!")
         );
         return UserMapper.toResponseDTO(user);
+    }
+
+    public User findUserByLogin(String login){
+        return userRepository.findByLogin(login).orElseThrow(
+                () -> new ResourceNotFoundException("Usuario não encontrado!")
+        );
     }
 
 }

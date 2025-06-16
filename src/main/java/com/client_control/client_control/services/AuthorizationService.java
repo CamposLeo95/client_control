@@ -1,5 +1,7 @@
 package com.client_control.client_control.services;
 
+import com.client_control.client_control.entities.UserDetailsImpl;
+import com.client_control.client_control.exceptions.ResourceNotFoundException;
 import com.client_control.client_control.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +17,10 @@ public class AuthorizationService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByLogin(username);
+        var user = userRepository.findByLogin(username).orElseThrow(
+                () -> new ResourceNotFoundException("Usuario não encontrado!")
+        );
+
+        return new UserDetailsImpl(user);
     }
 }

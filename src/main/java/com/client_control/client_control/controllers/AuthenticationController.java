@@ -3,6 +3,7 @@ package com.client_control.client_control.controllers;
 import com.client_control.client_control.dtos.auth.AuthenticationRequestDTO;
 import com.client_control.client_control.dtos.user.LoginResponseDTO;
 import com.client_control.client_control.entities.User;
+import com.client_control.client_control.entities.UserDetailsImpl;
 import com.client_control.client_control.services.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,10 +26,12 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(@RequestBody AuthenticationRequestDTO dto){
+
+        System.out.println(dto);
         var usernamePassword = new UsernamePasswordAuthenticationToken(dto.login(), dto.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
-
-        var token = tokenService.generateToken((User) auth.getPrincipal());
+        var userDetail = (UserDetailsImpl) auth.getPrincipal();
+        var token = tokenService.generateToken(userDetail.getUser());
 
         return ResponseEntity.ok(new LoginResponseDTO(token));
     }

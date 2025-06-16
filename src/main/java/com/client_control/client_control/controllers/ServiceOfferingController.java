@@ -4,10 +4,9 @@ import com.client_control.client_control.dtos.serviceOffering.ServiceOfferingReq
 import com.client_control.client_control.entities.ServiceOffering;
 import com.client_control.client_control.services.ServiceOfferingService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/service-offerring")
@@ -23,5 +22,10 @@ public class ServiceOfferingController {
     public ResponseEntity<Void> createServiceOffering(@RequestBody ServiceOfferingRequestDTO dto){
         serviceOfferingService.createServiceOffering(dto);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ServiceOffering>> findAllServiceOffering() {
+        return ResponseEntity.ok(serviceOfferingService.findAllServiceOffering());
     }
 }

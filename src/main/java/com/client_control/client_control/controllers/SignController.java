@@ -1,11 +1,11 @@
 package com.client_control.client_control.controllers;
 
+import com.client_control.client_control.entities.Sign;
 import com.client_control.client_control.services.SignService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/sign")
@@ -15,6 +15,11 @@ public class SignController {
 
     public SignController(SignService signService){
         this.signService = signService;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Sign>> findAllSign() {
+        return ResponseEntity.ok(signService.findAllSign());
     }
 
 

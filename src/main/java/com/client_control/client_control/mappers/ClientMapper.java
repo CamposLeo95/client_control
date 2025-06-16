@@ -4,6 +4,7 @@ import com.client_control.client_control.dtos.client.ClientRequestDTO;
 import com.client_control.client_control.dtos.client.ClientResponseDTO;
 import com.client_control.client_control.entities.Client;
 import com.client_control.client_control.entities.User;
+import org.springframework.security.core.userdetails.UserDetails;
 
 public class ClientMapper {
 
@@ -18,7 +19,7 @@ public class ClientMapper {
         );
     }
 
-    public static Client toEntity(ClientRequestDTO dto){
+    public static Client toEntity(ClientRequestDTO dto, User user ){
         Client client = new Client(
                 dto.name(),
                 dto.login(),
@@ -27,8 +28,6 @@ public class ClientMapper {
                 dto.email()
         );
 
-        User user = new User();
-        user.setId(dto.user_id());
         client.setUser(user);
 
         return client;
