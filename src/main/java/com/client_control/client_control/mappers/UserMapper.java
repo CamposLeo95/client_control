@@ -12,7 +12,7 @@ public class UserMapper {
                 user.getName(),
                 user.getEmail(),
                 user.getLogin(),
-                user.isAdmin()
+                user.getRole()
         );
     }
 
@@ -22,7 +22,7 @@ public class UserMapper {
                 dto.email(),
                 dto.login(),
                 dto.password(),
-                dto.admin()
+                dto.role()
         );
     }
 }

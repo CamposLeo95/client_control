@@ -2,9 +2,11 @@ package com.client_control.client_control.services;
 
 import com.client_control.client_control.dtos.user.UserRequestDTO;
 import com.client_control.client_control.dtos.user.UserResponseDTO;
+import com.client_control.client_control.entities.User;
 import com.client_control.client_control.exceptions.ResourceNotFoundException;
 import com.client_control.client_control.mappers.UserMapper;
 import com.client_control.client_control.repositories.UserRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -19,7 +21,18 @@ public class UserService {
     }
 
     public void createUser(UserRequestDTO dto) {
-        userRepository.save(UserMapper.toEntity(dto));
+
+        String encryptedPassword = new BCryptPasswordEncoder().encode(dto.password());
+
+        var newUserRequestDTO =  new UserRequestDTO(
+                dto.name(),
+                dto.email(),
+                dto.login(),
+                encryptedPassword,
+                dto.role()
+        );
+
+        userRepository.save(UserMapper.toEntity(newUserRequestDTO));
     }
 
     public UserResponseDTO findUserById(UUID id) {

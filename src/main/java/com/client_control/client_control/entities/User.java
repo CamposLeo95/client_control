@@ -2,14 +2,18 @@ package com.client_control.client_control.entities;
 
 import com.client_control.client_control.entities.commom.AuditableEntity;
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Table(name = "tb_user")
-public class User extends AuditableEntity {
+public class User extends AuditableEntity implements UserDetails{
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -27,20 +31,20 @@ public class User extends AuditableEntity {
     @Column(name = "password")
     private String password;
 
-    @Column(name= "admin")
-    private boolean admin;
+    @Column(name= "role")
+    private UserRole role;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany
     private List<Client> clients = new ArrayList<>();
 
     public User() {}
 
-    public User(String name, String email, String login, String password, boolean admin) {
+    public User(String name, String email, String login, String password, UserRole role) {
         this.name = name;
         this.email = email;
         this.login = login;
         this.password = password;
-        this.admin = admin;
+        this.role = role;
     }
 
     public UUID getId() {
@@ -71,7 +75,6 @@ public class User extends AuditableEntity {
         return email;
     }
 
-
     public void setEmail(String email) {
         this.email = email;
     }
@@ -84,12 +87,12 @@ public class User extends AuditableEntity {
         this.password = password;
     }
 
-    public boolean isAdmin() {
-        return admin;
+    public UserRole getRole() {
+        return role;
     }
 
-    public void setAdmin(boolean admin) {
-        this.admin = admin;
+    public void setRole(UserRole role) {
+        this.role = role;
     }
 
     public List<Client> getClients() {
@@ -98,5 +101,36 @@ public class User extends AuditableEntity {
 
     public void setClients(List<Client> clients) {
         this.clients = clients;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if(this.role == UserRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+    }
+
+    @Override
+    public String getUsername() {
+        return login;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }
