@@ -46,7 +46,7 @@ public class UserService {
 
     public User findUserByLogin(String login){
         return userRepository.findByLogin(login).orElseThrow(
-                () -> new ResourceNotFoundException("Usuario não encontrado!")
+                () -> new ResourceNotFoundException("Usuário não encontrado!")
         );
     }
 

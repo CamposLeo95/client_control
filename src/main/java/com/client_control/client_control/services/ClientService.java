@@ -4,9 +4,11 @@ import com.client_control.client_control.dtos.client.ClientRequestDTO;
 import com.client_control.client_control.dtos.client.ClientResponseDTO;
 import com.client_control.client_control.entities.Client;
 import com.client_control.client_control.entities.User;
+import com.client_control.client_control.exceptions.BusinessException;
 import com.client_control.client_control.exceptions.ResourceNotFoundException;
 import com.client_control.client_control.mappers.ClientMapper;
 import com.client_control.client_control.repositories.ClientRepository;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -25,11 +27,11 @@ public class ClientService {
 
     public void createClient(ClientRequestDTO dto, String login) {
         if(clientRepository.findByLogin(dto.login()).isPresent()){
-            throw new RuntimeException("Login já cadastrado!");
+            throw new BusinessException("Login já cadastrado!");
         }
 
         if(clientRepository.findByEmail(dto.email()).isPresent()){
-            throw new RuntimeException("Email já cadastrado!");
+            throw new BusinessException("Email já cadastrado!");
         }
 
         User user = userService.findUserByLogin(login);
@@ -43,8 +45,8 @@ public class ClientService {
         );
     }
 
-    public List<ClientResponseDTO> getAllClient(){
-        return clientRepository.findAll()
+    public List<ClientResponseDTO> getAllClient(Specification<Client> specification){
+        return clientRepository.findAll(specification)
                 .stream()
                 .map(ClientMapper::toResponseDTO)
                 .toList();
