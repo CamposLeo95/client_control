@@ -1,7 +1,9 @@
 package com.client_control.client_control.controllers;
 
-import com.client_control.client_control.entities.Sign;
+import com.client_control.client_control.dtos.sign.SignResponseDTO;
 import com.client_control.client_control.services.SignService;
+import com.client_control.client_control.specifications.SpecificationSignTemplate;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,8 +20,8 @@ public class SignController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Sign>> findAllSign() {
-        return ResponseEntity.ok(signService.findAllSign());
+    public ResponseEntity<List<SignResponseDTO>> findAllSign(SpecificationSignTemplate specificationSignDTO, Pageable pageable) {
+        return ResponseEntity.ok(signService.findAllSign(specificationSignDTO, pageable));
     }
 
 

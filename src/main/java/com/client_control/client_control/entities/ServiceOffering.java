@@ -17,6 +17,10 @@ public class ServiceOffering extends AuditableEntity {
     private String name;
     private BigDecimal price;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
     @OneToMany
     List<Sign> signs = new ArrayList<>();
 
@@ -57,6 +61,14 @@ public class ServiceOffering extends AuditableEntity {
 
     public void setSigns(List<Sign> signs){
         this.signs = signs;
+    }
+
+    public User getUser(){
+        return user;
+    }
+
+    public void setUser(User user){
+        this.user = user;
     }
 
 }

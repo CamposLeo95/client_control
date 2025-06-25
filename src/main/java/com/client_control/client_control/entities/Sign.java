@@ -27,6 +27,10 @@ public class Sign extends AuditableEntity {
     @JoinColumn(name = "service_offering_id", nullable = false)
     private ServiceOffering serviceOffering;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
     public Sign() {}
 
     public Sign(boolean activeSign, LocalDate expireDate, Client client, ServiceOffering serviceOffering) {
@@ -34,6 +38,14 @@ public class Sign extends AuditableEntity {
         this.expireDate = expireDate;
         this.client = client;
         this.serviceOffering = serviceOffering;
+    }
+
+    public Sign(boolean activeSign, LocalDate expireDate, Client client, ServiceOffering serviceOffering, User user) {
+        this.activeSign = activeSign;
+        this.expireDate = expireDate;
+        this.client = client;
+        this.serviceOffering = serviceOffering;
+        this.user = user;
     }
 
     public Long getId() {
@@ -74,5 +86,12 @@ public class Sign extends AuditableEntity {
 
     public void setServiceOffering(ServiceOffering serviceOffering) {
         this.serviceOffering = serviceOffering;
+    }
+
+    public User getUser() {
+        return user;
+    }
+    public void setUser(User user){
+        this.user = user;
     }
 }

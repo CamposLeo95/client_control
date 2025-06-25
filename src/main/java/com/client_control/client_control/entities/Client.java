@@ -1,7 +1,6 @@
 package com.client_control.client_control.entities;
 
 import com.client_control.client_control.entities.commom.AuditableEntity;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;

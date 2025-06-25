@@ -4,7 +4,6 @@ import com.client_control.client_control.entities.commom.AuditableEntity;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
@@ -25,6 +24,9 @@ public class Payment extends AuditableEntity {
     @JoinColumn(name = "sign_id", nullable = false)
     private Sign sign;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     public Payment(){}
 
@@ -33,6 +35,14 @@ public class Payment extends AuditableEntity {
         this.description = description;
         this.client = client;
         this.sign = sign;
+    }
+
+    public Payment(BigDecimal value, String description, Client client, Sign sign, User user){
+        this.value = value;
+        this.description = description;
+        this.client = client;
+        this.sign = sign;
+        this.user = user;
     }
 
     public UUID getId() {
@@ -73,5 +83,12 @@ public class Payment extends AuditableEntity {
 
     public void setSign(Sign sign) {
         this.sign = sign;
+    }
+
+    public User getUser() {
+        return  user;
+    }
+    public void setUser(User user){
+        this.user = user;
     }
 }

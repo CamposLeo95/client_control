@@ -1,6 +1,5 @@
 package com.client_control.client_control.config;
 
-import com.client_control.client_control.entities.User;
 import com.client_control.client_control.entities.UserDetailsImpl;
 import com.client_control.client_control.exceptions.ResourceNotFoundException;
 import com.client_control.client_control.repositories.UserRepository;
@@ -11,13 +10,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Optional;
-import java.util.UUID;
+
 
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
@@ -36,10 +35,9 @@ public class SecurityFilter extends OncePerRequestFilter {
             var user = userRepository.findByLogin(login).orElseThrow(
                     () -> new ResourceNotFoundException("Usuario não encontrado!")
             );
-
             var userDetails = new UserDetailsImpl(user);
 
-            var authentication = new UsernamePasswordAuthenticationToken( userDetails, null, userDetails.getAuthorities());
+            var authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 
@@ -51,4 +49,5 @@ public class SecurityFilter extends OncePerRequestFilter {
         if(authHeader == null) return null;
         return authHeader.replace("Bearer ", "");
     }
+
 }

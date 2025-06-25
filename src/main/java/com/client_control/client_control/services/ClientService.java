@@ -1,19 +1,21 @@
 package com.client_control.client_control.services;
 
+import com.client_control.client_control.dtos.client.ClientDTO;
 import com.client_control.client_control.dtos.client.ClientRequestDTO;
 import com.client_control.client_control.dtos.client.ClientResponseDTO;
 import com.client_control.client_control.entities.Client;
 import com.client_control.client_control.entities.User;
+import com.client_control.client_control.entities.UserRole;
 import com.client_control.client_control.exceptions.BusinessException;
 import com.client_control.client_control.exceptions.ResourceNotFoundException;
 import com.client_control.client_control.mappers.ClientMapper;
 import com.client_control.client_control.repositories.ClientRepository;
+import com.client_control.client_control.utils.SpecificationUtils;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class ClientService {
@@ -25,16 +27,17 @@ public class ClientService {
         this.userService = userService;
     }
 
-    public void createClient(ClientRequestDTO dto, String login) {
-        if(clientRepository.findByLogin(dto.login()).isPresent()){
+    public void createClient(ClientRequestDTO dto) {
+        User user = userService.mySelf();
+
+        if(clientRepository.findByLoginAndUserId(dto.login(), user.getId()).isPresent()){
             throw new BusinessException("Login já cadastrado!");
         }
 
-        if(clientRepository.findByEmail(dto.email()).isPresent()){
+        if(clientRepository.findByEmailAndUserId(dto.email(), user.getId()).isPresent()){
             throw new BusinessException("Email já cadastrado!");
         }
 
-        User user = userService.findUserByLogin(login);
 
         clientRepository.save(ClientMapper.toEntity(dto, user));
     }
@@ -45,8 +48,11 @@ public class ClientService {
         );
     }
 
-    public List<ClientResponseDTO> getAllClient(Specification<Client> specification){
-        return clientRepository.findAll(specification)
+    public List<ClientResponseDTO> findAllClient(Specification<Client> specificationDto, Pageable pageable){
+        User user = userService.mySelf();
+        Specification<Client> specification = SpecificationUtils.SpecificationRole(specificationDto, user);
+
+        return clientRepository.findAll(specification, pageable)
                 .stream()
                 .map(ClientMapper::toResponseDTO)
                 .toList();

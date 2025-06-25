@@ -1,8 +1,12 @@
 package com.client_control.client_control.controllers;
 
 import com.client_control.client_control.dtos.payment.PaymentRequestDTO;
+import com.client_control.client_control.dtos.payment.PaymentResponseDTO;
 import com.client_control.client_control.entities.Payment;
 import com.client_control.client_control.services.PaymentService;
+import com.client_control.client_control.specifications.SpecificationClientTemplate;
+import com.client_control.client_control.specifications.SpecificationPaymentTemplate;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +30,7 @@ public class PaymentController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Payment>> findAllPayments() {
-        return ResponseEntity.ok(paymentService.findAllPayments());
+    public ResponseEntity<List<PaymentResponseDTO>> findAllPayments(SpecificationPaymentTemplate specificationClient, Pageable pageable) {
+        return ResponseEntity.ok(paymentService.findAllPayments(specificationClient, pageable));
     }
 }

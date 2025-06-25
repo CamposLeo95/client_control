@@ -3,9 +3,12 @@ package com.client_control.client_control.services;
 import com.client_control.client_control.dtos.user.UserRequestDTO;
 import com.client_control.client_control.dtos.user.UserResponseDTO;
 import com.client_control.client_control.entities.User;
+import com.client_control.client_control.entities.UserDetailsImpl;
 import com.client_control.client_control.exceptions.ResourceNotFoundException;
 import com.client_control.client_control.mappers.UserMapper;
 import com.client_control.client_control.repositories.UserRepository;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -49,5 +52,11 @@ public class UserService {
                 () -> new ResourceNotFoundException("Usuário não encontrado!")
         );
     }
+    public  User mySelf() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+       return findUserByLogin(userDetails.getUsername());
+    }
+
 
 }
