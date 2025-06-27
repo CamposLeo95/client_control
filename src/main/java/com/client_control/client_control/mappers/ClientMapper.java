@@ -13,9 +13,10 @@ public class ClientMapper {
                 client.getId(),
                 client.getName(),
                 client.getLogin(),
-                client.getPassword(),
                 client.getPhone(),
-                client.getEmail()
+                client.getPassword(),
+                client.getEmail(),
+                client.getCreatedAt()
         );
     }
 
