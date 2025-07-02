@@ -13,7 +13,7 @@ import org.springframework.data.jpa.domain.Specification;
         @Spec(path = "activeSign", params = {"active"}, spec = Equal.class),
         @Spec(path = "client.name", params={"client"}, spec = LikeIgnoreCase.class),
         @Spec(path = "expireDate", params = {"startDate", "endDate"}, spec = Between.class, config = "yyyy-MM-dd"),
-        @Spec(path = "createdAt", params = {"startDate", "endDate"}, spec = Between.class, config = "yyyy-MM-dd")
+//        @Spec(path = "createdAt", params = {"startDate", "endDate"}, spec = Between.class, config = "yyyy-MM-dd")
 })
 public interface SpecificationSignTemplate extends Specification<Sign> {
 }

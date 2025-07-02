@@ -7,10 +7,13 @@ import com.client_control.client_control.specifications.SpecificationPaymentTemp
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/payment")
@@ -25,8 +28,7 @@ public class PaymentController {
     @PostMapping
     public ResponseEntity<Void> createPayment(@RequestBody PaymentRequestDTO dto) {
         paymentService.createPayment(dto);
-
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping
@@ -35,5 +37,10 @@ public class PaymentController {
             @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
         return ResponseEntity.ok(paymentService.findAllPayments(specificationClient, pageable));
+    }
+
+    @GetMapping("{payment_id}")
+    public ResponseEntity<PaymentResponseDTO> findPaymentById(@PathVariable("payment_id") UUID id){
+        return  ResponseEntity.ok(paymentService.findPaymentById(id));
     }
 }

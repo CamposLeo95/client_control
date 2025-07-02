@@ -14,7 +14,8 @@ public class PaymentMapper {
                 payment.getValue(),
                 payment.getDescription(),
                 ClientDTO.toClientDTO(payment.getClient()),
-                SignDTO.toSignDTO(payment.getSign())
+                SignDTO.toSignDTO(payment.getSign()),
+                payment.getCreatedAt()
         );
     }
 }

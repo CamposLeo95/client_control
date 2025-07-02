@@ -1,6 +1,8 @@
 package com.client_control.client_control.controllers;
 
 import com.client_control.client_control.dtos.sign.SignResponseDTO;
+import com.client_control.client_control.entities.Sign;
+import com.client_control.client_control.mappers.SignMapper;
 import com.client_control.client_control.services.SignService;
 import com.client_control.client_control.specifications.SpecificationSignTemplate;
 import org.springframework.data.domain.Pageable;
@@ -34,5 +36,11 @@ public class SignController {
     public ResponseEntity<Void> toggleStatusSign(@PathVariable("sign_id") Long id) {
         signService.toggleStatusSign(id);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("{sign_id}")
+    public ResponseEntity<SignResponseDTO> findSignById(@PathVariable("sign_id") Long id){
+        Sign sign = signService.findSignById(id);
+        return ResponseEntity.ok(SignMapper.toResponseDTO(sign));
     }
 }

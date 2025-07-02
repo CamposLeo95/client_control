@@ -4,6 +4,8 @@ import com.client_control.client_control.dtos.client.ClientDTO;
 import com.client_control.client_control.dtos.sign.SignDTO;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public record PaymentResponseDTO(
@@ -11,5 +13,6 @@ public record PaymentResponseDTO(
         BigDecimal value,
         String description,
         ClientDTO.RecordClientDTO client,
-        SignDTO.RecordSignDTO sign
+        SignDTO.RecordSignDTO sign,
+        LocalDateTime createdAt
 ) {}

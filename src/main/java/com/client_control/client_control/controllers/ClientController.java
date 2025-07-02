@@ -11,6 +11,7 @@ import com.client_control.client_control.services.ClientService;
 import com.client_control.client_control.specifications.SpecificationClientTemplate;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -35,7 +36,7 @@ public class ClientController {
     @PostMapping
     public ResponseEntity<Void> createClient(@RequestBody ClientRequestDTO dto) {
         clientService.createClient(dto);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping
