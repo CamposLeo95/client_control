@@ -1,5 +1,6 @@
 package com.client_control.client_control.services;
 
+import com.client_control.client_control.dtos.user.UpdatePasswordRequestDTO;
 import com.client_control.client_control.dtos.user.UserRequestDTO;
 import com.client_control.client_control.dtos.user.UserResponseDTO;
 import com.client_control.client_control.entities.User;
@@ -11,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,14 +22,16 @@ import java.util.UUID;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public void createUser(UserRequestDTO dto) {
 
-        String encryptedPassword = new BCryptPasswordEncoder().encode(dto.password());
+        String encryptedPassword = passwordEncoder.encode(dto.password());
 
         var newUserRequestDTO =  new UserRequestDTO(
                 dto.name(),
@@ -38,6 +42,20 @@ public class UserService {
         );
 
         userRepository.save(UserMapper.toEntity(newUserRequestDTO));
+    }
+
+
+    public void updateUserPassword(UUID id, UpdatePasswordRequestDTO dto) {
+        User user = userRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("usuário não encontrado")
+        );
+
+        String encryptedPassword = passwordEncoder.encode(dto.password());
+
+        user.setPassword(encryptedPassword);
+
+        userRepository.save(user);
+
     }
 
     public UserResponseDTO findUserById(UUID id) {

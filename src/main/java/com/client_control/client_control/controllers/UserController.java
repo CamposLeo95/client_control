@@ -1,17 +1,13 @@
 package com.client_control.client_control.controllers;
 
+import com.client_control.client_control.dtos.user.UpdatePasswordRequestDTO;
 import com.client_control.client_control.dtos.user.UserRequestDTO;
 import com.client_control.client_control.dtos.user.UserResponseDTO;
-import com.client_control.client_control.entities.ServiceOffering;
-import com.client_control.client_control.entities.User;
 import com.client_control.client_control.mappers.UserMapper;
 import com.client_control.client_control.services.UserService;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -35,12 +31,16 @@ public class UserController {
         return ResponseEntity.ok(userService.findUserById(id));
     }
 
-    @GetMapping
+    @GetMapping("/me")
     public ResponseEntity<UserResponseDTO> me() {
         return ResponseEntity.ok(UserMapper.toResponseDTO(userService.mySelf()));
     }
 
 
-
+    @PutMapping("/update-password/{user_id}")
+    public ResponseEntity<Void> updateUserPassword(@PathVariable("user_id") UUID id, @RequestBody UpdatePasswordRequestDTO password){
+        userService.updateUserPassword(id, password);
+        return ResponseEntity.ok().build();
+    }
 
 }

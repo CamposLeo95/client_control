@@ -69,4 +69,5 @@ public class ClientService {
                 () -> new ResourceNotFoundException("Cliente não encontrado!")
         );
     }
+
 }

@@ -29,6 +29,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.PUT, "/user/update-password/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/login", "/user").permitAll()
                         .anyRequest().authenticated()
                 )
