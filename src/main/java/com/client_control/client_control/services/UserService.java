@@ -1,32 +1,41 @@
 package com.client_control.client_control.services;
 
-import com.client_control.client_control.dtos.user.UpdatePasswordRequestDTO;
-import com.client_control.client_control.dtos.user.UserRequestDTO;
-import com.client_control.client_control.dtos.user.UserResponseDTO;
+import com.client_control.client_control.dtos.user.*;
 import com.client_control.client_control.entities.User;
 import com.client_control.client_control.entities.UserDetailsImpl;
 import com.client_control.client_control.exceptions.ResourceNotFoundException;
 import com.client_control.client_control.mappers.UserMapper;
 import com.client_control.client_control.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service
 public class UserService {
 
+    @Value("${app.front-url}")
+    private String frontUrl;
+
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final EmailService emailservice;
+    private final TokenService tokenService;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+
+    public UserService(
+            UserRepository userRepository,
+            PasswordEncoder passwordEncoder,
+            TokenService tokenService,
+            EmailService emailservice
+    ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.tokenService = tokenService;
+        this.emailservice = emailservice;
     }
 
     public void createUser(UserRequestDTO dto) {
@@ -45,13 +54,13 @@ public class UserService {
     }
 
 
-    public void updateUserPassword(UUID id, UpdatePasswordRequestDTO dto) {
-        User user = userRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("usuário não encontrado")
+    public void updateUserPassword(String token,  UpdatePasswordRequestDTO dto) {
+        var userLogin = tokenService.validateToken(token);
+
+        User user = userRepository.findByLogin(userLogin).orElseThrow(
+                () -> new ResourceNotFoundException("Usuário não encontrado")
         );
-
         String encryptedPassword = passwordEncoder.encode(dto.password());
-
         user.setPassword(encryptedPassword);
 
         userRepository.save(user);
@@ -76,5 +85,24 @@ public class UserService {
        return findUserByLogin(userDetails.getUsername());
     }
 
+    public void recoveryPassword(RecoveryPasswordRequestDTO dto) {
+            User user = userRepository.findByEmail(dto.email()).orElseThrow(
+                    () -> new ResourceNotFoundException("Usuario não encontrado!")
+            );
+            var tokenRecovery = tokenService.generateToken(user);
+
+            String link = frontUrl + "/auth/recovery-password/" + tokenRecovery;
+
+            SendEmailDTO send = new SendEmailDTO(
+                    "leocampos.995@gmail.com",
+                    dto.email(),
+                    "Recuperaçao de senha ",
+                    link
+            );
+
+           emailservice.sendEmail(send);
+
+
+    }
 
 }

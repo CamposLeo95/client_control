@@ -1,5 +1,7 @@
 package com.client_control.client_control.controllers;
 
+
+import com.client_control.client_control.dtos.user.RecoveryPasswordRequestDTO;
 import com.client_control.client_control.dtos.user.UpdatePasswordRequestDTO;
 import com.client_control.client_control.dtos.user.UserRequestDTO;
 import com.client_control.client_control.dtos.user.UserResponseDTO;
@@ -37,9 +39,15 @@ public class UserController {
     }
 
 
-    @PutMapping("/update-password/{user_id}")
-    public ResponseEntity<Void> updateUserPassword(@PathVariable("user_id") UUID id, @RequestBody UpdatePasswordRequestDTO password){
-        userService.updateUserPassword(id, password);
+    @PutMapping("/update-password/{token}")
+    public ResponseEntity<Void> updateUserPassword(@PathVariable("token") String token, @RequestBody UpdatePasswordRequestDTO dto){
+        userService.updateUserPassword(token, dto);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/recovery-password")
+    public ResponseEntity<Void> recoveryPassword(@RequestBody RecoveryPasswordRequestDTO dto) {
+        userService.recoveryPassword(dto);
         return ResponseEntity.ok().build();
     }
 
