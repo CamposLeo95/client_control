@@ -86,7 +86,7 @@ public class UserService {
     }
 
     public void recoveryPassword(RecoveryPasswordRequestDTO dto) {
-        try {
+
             User user = userRepository.findByEmail(dto.email()).orElseThrow(
                     () -> new ResourceNotFoundException("Usuario não encontrado!")
             );
@@ -99,11 +99,7 @@ public class UserService {
                     link
             );
             emailservice.sendEmail(send);
-        } catch (ResourceNotFoundException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new RuntimeException("Erro ao enviar email de recuperação", e);
-        }
+
     }
 
 }
