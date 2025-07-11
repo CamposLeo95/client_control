@@ -19,7 +19,8 @@ import org.springframework.data.jpa.domain.Specification;
         @Or({
                 @Spec(path = "name", params = "all", spec = LikeIgnoreCase.class),
                 @Spec(path = "email", params = "all", spec = LikeIgnoreCase.class),
-                @Spec(path = "phone", params ="all", spec = LikeIgnoreCase.class  )
+                @Spec(path = "phone", params ="all", spec = LikeIgnoreCase.class),
+                @Spec(path = "login", params = "all", spec = LikeIgnoreCase.class)
         }),
 }, and = @Spec(path = "createdAt", params = {"startDate", "endDate"}, spec = Between.class, config = "yyyy-MM-dd")  )
 

@@ -98,6 +98,8 @@ public class UserService {
                     "Recuperaçao de senha ",
                     link
             );
+
+            
             emailservice.sendEmail(send);
         } catch (ResourceNotFoundException e) {
             throw e;
