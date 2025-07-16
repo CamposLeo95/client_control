@@ -25,7 +25,6 @@ public class UserService {
     private final EmailService emailservice;
     private final TokenService tokenService;
 
-
     public UserService(
             UserRepository userRepository,
             PasswordEncoder passwordEncoder,
@@ -53,7 +52,6 @@ public class UserService {
         userRepository.save(UserMapper.toEntity(newUserRequestDTO));
     }
 
-
     public void updateUserPassword(String token,  UpdatePasswordRequestDTO dto) {
         var userLogin = tokenService.validateToken(token);
 
@@ -79,6 +77,7 @@ public class UserService {
                 () -> new ResourceNotFoundException("Usuário não encontrado!")
         );
     }
+
     public  User mySelf() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
@@ -91,7 +90,9 @@ public class UserService {
                     () -> new ResourceNotFoundException("Usuario não encontrado!")
             );
             var tokenRecovery = tokenService.generateToken(user);
+
             String link = frontUrl + "/auth/recovery-password/" + tokenRecovery;
+
             SendEmailDTO send = new SendEmailDTO(
                     "leocampos.995@gmail.com",
                     dto.email(),
