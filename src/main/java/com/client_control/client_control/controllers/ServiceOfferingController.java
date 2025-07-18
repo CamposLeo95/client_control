@@ -44,4 +44,11 @@ public class ServiceOfferingController {
         ServiceOffering service =  serviceOfferingService.findServiceOfferingById(id);
         return ResponseEntity.ok(ServiceOfferingMapper.toResponseDTO(service));
     }
+
+    @PutMapping("{service_id}")
+    public ResponseEntity<Void> updateServiceOffering(@PathVariable("service_id") Long id, @RequestBody ServiceOfferingRequestDTO dto) {
+        serviceOfferingService.updateServiceOffering(id, dto);
+
+        return ResponseEntity.ok().build();
+    }
 }

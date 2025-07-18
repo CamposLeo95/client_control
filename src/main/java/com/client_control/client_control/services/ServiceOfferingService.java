@@ -36,6 +36,16 @@ public class ServiceOfferingService {
         serviceOfferingRepository.save(ServiceOfferingMapper.toEntity(dto, user));
     }
 
+    public void updateServiceOffering(Long id, ServiceOfferingRequestDTO dto){
+        ServiceOffering serviceOfferingDB = findServiceOfferingById(id);
+        System.out.println(dto);
+        if(dto.name() != null) serviceOfferingDB.setName(dto.name());
+        if(dto.price() != null) serviceOfferingDB.setPrice(dto.price());
+
+        serviceOfferingRepository.save(serviceOfferingDB);
+
+    }
+
     public List<ServiceOfferingResponseDTO> findAllServiceOffering(Specification<ServiceOffering> specificationDto, Pageable pageable) {
         User user = userService.mySelf();
         Specification<ServiceOffering> specification = SpecificationUtils.SpecificationRole(specificationDto, user);
