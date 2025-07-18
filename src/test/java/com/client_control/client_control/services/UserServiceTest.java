@@ -1,5 +1,7 @@
 package com.client_control.client_control.services;
 
+import com.client_control.client_control.dtos.user.RecoveryPasswordRequestDTO;
+import com.client_control.client_control.dtos.user.SendEmailDTO;
 import com.client_control.client_control.dtos.user.UserRequestDTO;
 import com.client_control.client_control.dtos.user.UserResponseDTO;
 import com.client_control.client_control.entities.User;
@@ -20,8 +22,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
@@ -125,6 +126,31 @@ public class UserServiceTest {
         });
 
         verify(userRepository).findByLogin(anyString());
+
+    }
+
+    @Test
+    @DisplayName("should send email with correct data")
+    void recoveryPasswordCase1(){
+        var email = "teste@email.com";
+        RecoveryPasswordRequestDTO dto = new RecoveryPasswordRequestDTO(email);
+        User user = new User();
+        user.setEmail(email);
+
+        when(userRepository.findByEmail(dto.email())).thenReturn(Optional.of(user));
+        when(tokenService.generateToken(user)).thenReturn(anyString());
+
+        userService.recoveryPassword(dto);
+
+        ArgumentCaptor<SendEmailDTO> captor = ArgumentCaptor.forClass(SendEmailDTO.class);
+
+        verify(userRepository, times(1)).findByEmail(dto.email());
+        verify(tokenService,times(1)).generateToken(user);
+        verify(emailService, times(1)).sendEmail(captor.capture());
+
+        SendEmailDTO captured = captor.getValue();
+
+        assertEquals("teste@email.com", captured.to());
 
     }
 

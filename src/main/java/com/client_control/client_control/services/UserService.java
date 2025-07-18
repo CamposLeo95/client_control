@@ -89,17 +89,17 @@ public class UserService {
             User user = userRepository.findByEmail(dto.email()).orElseThrow(
                     () -> new ResourceNotFoundException("Usuario não encontrado!")
             );
+
             var tokenRecovery = tokenService.generateToken(user);
 
             String link = frontUrl + "/auth/recovery-password/" + tokenRecovery;
 
             SendEmailDTO send = new SendEmailDTO(
                     "leocampos.995@gmail.com",
-                    dto.email(),
-                    "Recuperaçao de senha ",
+                    user.getEmail(),
+                    "Recuperaçao de senha",
                     link
             );
-
             
             emailservice.sendEmail(send);
         } catch (ResourceNotFoundException e) {
