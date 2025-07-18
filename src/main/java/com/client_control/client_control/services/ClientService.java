@@ -64,10 +64,22 @@ public class ClientService {
         );
     }
 
-    public Client finClientByLogin(String login){
+    public Client findClientByLogin(String login){
         return clientRepository.findByLogin(login).orElseThrow(
                 () -> new ResourceNotFoundException("Cliente não encontrado!")
         );
+    }
+
+    public void updateClient(Long id, ClientRequestDTO dto) {
+        Client clientDB = findClientById(id);
+
+        if(dto.name() != null) clientDB.setName(dto.name());
+        if(dto.password() != null) clientDB.setPassword(dto.password());
+        if(dto.login() != null) clientDB.setLogin(dto.login());
+        if(dto.email() != null) clientDB.setEmail(dto.email());
+        if(dto.phone() != null) clientDB.setPhone(dto.phone());
+
+        clientRepository.save(clientDB);
     }
 
 }
