@@ -12,7 +12,6 @@ import org.springframework.data.jpa.domain.Specification;
 
 @And({
         @Spec(path = "name", spec = LikeIgnoreCase.class),
-
 })
 
 @Conjunction(value ={
