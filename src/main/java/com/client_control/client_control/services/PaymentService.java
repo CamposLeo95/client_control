@@ -91,7 +91,7 @@ public class PaymentService {
                 throw new BusinessException("Valor inferior ao preço do serviço");
             }
 
-            var totalMonths = dto.value().divide(serviceOffering.getPrice(), 0, RoundingMode.DOWN).intValue();it
+            var totalMonths = dto.value().divide(serviceOffering.getPrice(), 0, RoundingMode.DOWN).intValue();
 
             if(dto.manual_date() != null){
                 expireDate = dto.manual_date().plusMonths(totalMonths);
