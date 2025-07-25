@@ -1,7 +1,7 @@
 package com.client_control.client_control.services;
 
+import com.client_control.client_control.dtos.sign.SignUpdateDescriptionDTO;
 import com.client_control.client_control.dtos.sign.SignResponseDTO;
-import com.client_control.client_control.entities.ServiceOffering;
 import com.client_control.client_control.entities.Sign;
 import com.client_control.client_control.entities.User;
 import com.client_control.client_control.exceptions.ResourceNotFoundException;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class SignService {
@@ -67,5 +66,11 @@ public class SignService {
         sign.setActiveSign(!sign.isActiveSign());
         signRepository.save(sign);
 
+    }
+
+    public void updateSignDescription(SignUpdateDescriptionDTO dto, Long id) {
+        Sign signDB = findSignById(id);
+        signDB.setDescription(dto.description());
+        signRepository.save(signDB);
     }
 }

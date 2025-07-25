@@ -13,5 +13,6 @@ public record SignResponseDTO(
         boolean activeSign,
         LocalDate expireDate,
         ClientDTO.RecordClientDTO client,
-        ServiceOfferingDTO.RecordServiceOfferingDTO serviceOffering
+        ServiceOfferingDTO.RecordServiceOfferingDTO serviceOffering,
+        String description
 ) {}

@@ -56,10 +56,14 @@ public class PaymentService {
 
             var totalMonths = dto.value().divide(serviceOffering.getPrice(), 0, RoundingMode.DOWN).intValue();
 
-            if(sign.getExpireDate().isBefore(dateNow)){
-                newExpireDate = dateNow.plusMonths(totalMonths);
-            }else{
-                newExpireDate = sign.getExpireDate().plusMonths(totalMonths);
+            if(dto.manual_date() != null){
+                newExpireDate = dto.manual_date().plusMonths(totalMonths);
+            }
+
+            if(dto.manual_date() == null) {
+                 newExpireDate = sign.getExpireDate().isBefore(dateNow)
+                        ? dateNow.plusMonths(totalMonths)
+                        : sign.getExpireDate().plusMonths(totalMonths);
             }
 
             signService.updateSign(sign, newExpireDate);
@@ -77,14 +81,20 @@ public class PaymentService {
         } else {
             var client = clientService.findClientById(dto.client_id());
             var serviceOffering = serviceOfferingService.findServiceOfferingById(dto.serviceOffering_id());
-
+            LocalDate expireDate = LocalDate.now();
             if(dto.value().compareTo(serviceOffering.getPrice()) < 0){
                 throw new BusinessException("Valor inferior ao preço do serviço");
             }
 
             var totalMonths = dto.value().divide(serviceOffering.getPrice(), 0, RoundingMode.DOWN).intValue();
 
-            var expireDate = dateNow.plusMonths(totalMonths);
+            System.out.println(dto.manual_date());
+
+            if(dto.manual_date() != null){
+                expireDate = dto.manual_date().plusMonths(totalMonths);
+            } else {
+                expireDate = dateNow.plusMonths(totalMonths);
+            }
 
             Sign sign = signService.createSign(new Sign(
                     true,

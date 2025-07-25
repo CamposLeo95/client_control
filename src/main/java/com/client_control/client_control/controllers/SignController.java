@@ -1,6 +1,7 @@
 package com.client_control.client_control.controllers;
 
 import com.client_control.client_control.dtos.sign.SignResponseDTO;
+import com.client_control.client_control.dtos.sign.SignUpdateDescriptionDTO;
 import com.client_control.client_control.entities.Sign;
 import com.client_control.client_control.mappers.SignMapper;
 import com.client_control.client_control.services.SignService;
@@ -31,7 +32,6 @@ public class SignController {
         return ResponseEntity.ok(signService.findAllSign(specificationSignDTO, pageable));
     }
 
-
     @PutMapping("/toggle/{sign_id}")
     public ResponseEntity<Void> toggleStatusSign(@PathVariable("sign_id") Long id) {
         signService.toggleStatusSign(id);
@@ -42,5 +42,11 @@ public class SignController {
     public ResponseEntity<SignResponseDTO> findSignById(@PathVariable("sign_id") Long id){
         Sign sign = signService.findSignById(id);
         return ResponseEntity.ok(SignMapper.toResponseDTO(sign));
+    }
+
+    @PutMapping("/description/{sign_id}")
+    public ResponseEntity<Void> updateSignDescription(@PathVariable("sign_id") Long id, @RequestBody SignUpdateDescriptionDTO dto) {
+        signService.updateSignDescription(dto, id);
+        return ResponseEntity.ok().build();
     }
 }

@@ -15,7 +15,8 @@ public class SignMapper {
                 sign.isActiveSign(),
                 sign.getExpireDate(),
                 ClientDTO.toClientDTO(sign.getClient()),
-                ServiceOfferingDTO.toServiceOfferingDTO(sign.getServiceOffering())
+                ServiceOfferingDTO.toServiceOfferingDTO(sign.getServiceOffering()),
+                sign.getDescription()
         );
     }
 

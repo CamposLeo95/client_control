@@ -17,6 +17,9 @@ public class Sign extends AuditableEntity {
     @Column(name = "active")
     private boolean activeSign;
 
+    @Column(name = "description", nullable = true)
+    private String description;
+
     private LocalDate expireDate;
 
     @ManyToOne
@@ -63,6 +66,10 @@ public class Sign extends AuditableEntity {
     public void setActiveSign(boolean active) {
         this.activeSign = active;
     }
+
+    public String getDescription() {return this.description;}
+
+    public void setDescription(String description){this.description = description;}
 
     public LocalDate getExpireDate() {
         return expireDate;
