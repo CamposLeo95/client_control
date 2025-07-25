@@ -13,7 +13,6 @@ import org.springframework.data.jpa.domain.Specification;
 
 @And({
         @Spec(path = "activeSign", params = {"active"}, spec = Equal.class),
-
         @Spec(path = "expireDate", params = {"startDate", "endDate"}, spec = Between.class, config = "yyyy-MM-dd"),
 //        @Spec(path = "createdAt", params = {"startDate", "endDate"}, spec = Between.class, config = "yyyy-MM-dd")
 })
