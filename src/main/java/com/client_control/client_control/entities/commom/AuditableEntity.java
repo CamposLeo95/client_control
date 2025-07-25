@@ -20,7 +20,9 @@ public abstract class AuditableEntity {
     //@PrePersist: executa antes do INSERT.
     @PrePersist
     protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
+        if (this.createdAt == null) {
+            this.createdAt = LocalDateTime.now();
+        }
         this.updatedAt = LocalDateTime.now();
     }
 
@@ -34,8 +36,17 @@ public abstract class AuditableEntity {
         return createdAt;
     }
 
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
     public LocalDateTime getUpdatedAt(){
         return updatedAt;
     }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
 
 }

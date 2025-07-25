@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -76,6 +77,10 @@ public class PaymentService {
                     user
             );
 
+            if(dto.manual_date() != null){
+                payment.setCreatedAt(dto.manual_date().atStartOfDay());
+            }
+
             paymentRepository.save(payment);
 
         } else {
@@ -86,9 +91,7 @@ public class PaymentService {
                 throw new BusinessException("Valor inferior ao preço do serviço");
             }
 
-            var totalMonths = dto.value().divide(serviceOffering.getPrice(), 0, RoundingMode.DOWN).intValue();
-
-            System.out.println(dto.manual_date());
+            var totalMonths = dto.value().divide(serviceOffering.getPrice(), 0, RoundingMode.DOWN).intValue();it
 
             if(dto.manual_date() != null){
                 expireDate = dto.manual_date().plusMonths(totalMonths);
@@ -111,6 +114,10 @@ public class PaymentService {
                     sign,
                     user
             );
+
+            if(dto.manual_date() != null){
+                payment.setCreatedAt(dto.manual_date().atStartOfDay());
+            }
 
             paymentRepository.save(payment);
         }
