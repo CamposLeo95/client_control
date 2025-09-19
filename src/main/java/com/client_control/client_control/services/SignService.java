@@ -8,7 +8,9 @@ import com.client_control.client_control.exceptions.ResourceNotFoundException;
 import com.client_control.client_control.mappers.SignMapper;
 import com.client_control.client_control.repositories.SignRepository;
 import com.client_control.client_control.utils.SpecificationUtils;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -33,11 +35,22 @@ public class SignService {
     }
 
 
-    public List<SignResponseDTO> findAllSign(Specification<Sign> specificationDto, Pageable pageable) {
+    public List<SignResponseDTO> findAllSign(Specification<Sign> specificationDto, Pageable pageable, Boolean expiredFirst) {
         User user = userService.mySelf();
         Specification<Sign> specification = SpecificationUtils.SpecificationRole(specificationDto, user);
 
-        return signRepository.findAll(specification, pageable)
+        Sort sort = expiredFirst
+                ? Sort.by(Sort.Direction.ASC, "expireDate")
+                : Sort.by(Sort.Direction.DESC, "expireDate");
+
+        // cria um novo pageable com o sort escolhido
+        Pageable sortedPageable = PageRequest.of(
+                pageable.getPageNumber(),
+                pageable.getPageSize(),
+                sort
+        );
+
+        return signRepository.findAll(specification, sortedPageable)
                 .stream()
                 .map(SignMapper::toResponseDTO)
                 .toList();

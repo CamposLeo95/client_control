@@ -27,9 +27,10 @@ public class SignController {
     @GetMapping
     public ResponseEntity<List<SignResponseDTO>> findAllSign(
             SpecificationSignTemplate specificationSignDTO,
-            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
+            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
+            @RequestParam(required = false, defaultValue = "false") boolean expiredFirst
     ) {
-        return ResponseEntity.ok(signService.findAllSign(specificationSignDTO, pageable));
+        return ResponseEntity.ok(signService.findAllSign(specificationSignDTO, pageable, expiredFirst));
     }
 
     @PutMapping("/toggle/{sign_id}")

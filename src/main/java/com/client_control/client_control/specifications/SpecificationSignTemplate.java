@@ -14,14 +14,13 @@ import org.springframework.data.jpa.domain.Specification;
 @And({
         @Spec(path = "activeSign", params = {"active"}, spec = Equal.class),
         @Spec(path = "expireDate", params = {"startDate", "endDate"}, spec = Between.class, config = "yyyy-MM-dd"),
-//        @Spec(path = "createdAt", params = {"startDate", "endDate"}, spec = Between.class, config = "yyyy-MM-dd")
 })
 
 @Conjunction(value ={
         @Or({
+                @Spec(path = "client.login", params ="all", spec = LikeIgnoreCase.class),
                 @Spec(path = "client.name", params = "all", spec = LikeIgnoreCase.class),
                 @Spec(path = "client.email", params = "all", spec = LikeIgnoreCase.class),
-                @Spec(path = "client.login", params ="all", spec = LikeIgnoreCase.class),
                 @Spec(path = "client.phone", params = "all", spec = LikeIgnoreCase.class)
         })
 })
